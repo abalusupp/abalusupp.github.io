@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Link Example</title>
+</head>
+<body>
+    <h1>Welcome!</h1>
+    <p id="browserName"></p>
+
+    <script>
+        function detectBrowser() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+            if (/CriOS/.test(userAgent)) {
+                return "chrome"; // Chrome on iOS
+            } else if (/FxiOS/.test(userAgent)) {
+                return "firefox"; // Firefox on iOS
+            } else if (/EdgiOS/.test(userAgent)) {
+                return "edge"; // Edge on iOS
+            } else if (/Safari/.test(userAgent) && !/Chrome/.test(userAgent)) {
+                return "safari"; // Safari on iOS
+            }
+        }
+
+        const browserName = detectBrowser();
+        document.getElementById("browserName").innerText = `Browser Name: ${browserName}`;
+    </script>
+    <button id="openLink">Open Universal Link</button>
+
+    <script>
+        document.getElementById('openLink').addEventListener('click', function () {
+            const browserName = encodeURIComponent(detectBrowser());
+
+            let sourceUrl = window.location.href;
+            if (sourceUrl.endsWith("/")) {
+                sourceUrl = sourceUrl.slice(0, -1);
+                window.history.replaceState(null, null, sourceUrl);
+            }
+
+            const encodedSourceUrl = encodeURIComponent(sourceUrl);
+
+            const universalLink = `returntobrowser://www.paypal.com/app-switch-checkout?browser=${browserName}&source=${sourceUrl}`;
+
+            window.location.assign(universalLink);
+        });
+    </script>
+</body>
+</html>
