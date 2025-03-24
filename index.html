@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transient user action limit - UL</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        #delayInput1 {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100px;
+        }
+        #delayInput2 {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome!</h1>
+
+    <div>
+        <label for="delayInput1">Delay (milliseconds) for Pay With PayPal click:</label>
+        <input type="number" id="delayInput1" value="3000" min="0">
+    </div>
+    <div>
+        <label for="delayInput2">Delay (milliseconds) for backend API:</label>
+        <input type="number" id="delayInput2" value="3000" min="0">
+    </div>
+
+    <br>
+    <button id="payWithPayPal">Pay With PayPal</button>
+
+    <script>
+        document.getElementById('payWithPayPal').addEventListener('click', function () {
+            const delay1 = parseInt(document.getElementById('delayInput1').value, 10) / 1000;
+            console.log("delayInput1 in seconds:", delay1)
+            if (isNaN(delay1) || delay1 < 0) {
+                alert('Invalid delay parameter.');
+                return;
+            }
+            fetch(`https://httpbin.org/delay/${delay1}`)
+                .then(response => {
+                    const delay2 = parseInt(document.getElementById('delayInput2').value, 10) / 1000;
+                    console.log("delayInput2 in seconds:", delay2)
+                    window.location.href = `second-page.html?delay=${delay2}`;
+                })
+                .catch(error => {
+                    alert(`Error delaying button click: ${error.message}`);
+                });
+        });
+    </script>
+</body>
+</html>
