@@ -5,6 +5,10 @@
       {
         "appID": "4X95594BDS.com.abhinay.ReturnToBrowser",
         "paths": [ "/app-switch-checkout", "/app-switch-return-to-browser-tab" ]
+      },
+      {
+          "appID": "Q822Z38BYB.com.abhinay.ReturnToBrowser2",
+          "paths": ["/app-switch-checkout", "/app-switch-return-to-browser-tab"]
       }
     ]
   }
