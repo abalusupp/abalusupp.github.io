@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Page</title>
+    <style>
+        /* Simple spinner styles */
+        #spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 50px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #message {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="spinner"></div>
+    <p id="message">Processing your request...</p>
+
+    <script>
+        function getQueryParam(param) {
+            const params = new URLSearchParams(window.location.search);
+            return parseInt(params.get(param), 10);
+        }
+
+        const customDelay = getQueryParam('delay');
+        document.getElementById('spinner').style.display = 'block';
+
+        if (isNaN(customDelay) || customDelay < 0) {
+            alert('Invalid delay parameter.');
+            window.history.back();
+        } else {
+            fetch(`https://httpbin.org/delay/${customDelay}`)
+                .then(response => {
+                    var ul = 'https://www.paypal.com/app-switch-checkout?token=6X4078591K686073N&tokenType=ORDER_ID&buttonSessionID=uid_109931a52a_mje6mjy6mze&integration_type=web_sdk';
+                    window.location.href = ul;
+                })
+                .catch(error => {
+                    alert(`Error delaying button click: ${error.message}`);
+                });
+        }
+    </script>
+</body>
+</html>
