@@ -61,56 +61,12 @@
                 alert('Invalid delay parameter.');
                 return;
             }
-
-            const newTab = window.open(`about:blank?delay1=${delay1}`, '_blank');
-
-            if (newTab) {
-                console.log("Writing spinner to new tab...");
-                newTab.document.write(`
-                    <!DOCTYPE html>
-                    <html lang="en">
-                    <head>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <title>Loading...</title>
-                        <style>
-                            #spinner {
-                                width: 50px;
-                                height: 50px;
-                                border: 5px solid #f3f3f3;
-                                border-top: 5px solid #3498db;
-                                border-radius: 50%;
-                                animation: spin 1s linear infinite;
-                                margin: 50px auto;
-                            }
-                            @keyframes spin {
-                                0% { transform: rotate(0deg); }
-                                100% { transform: rotate(360deg); }
-                            }
-                            #message {
-                                text-align: center;
-                                margin-top: 20px;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div id="spinner"></div>
-                        <p id="message">Loading... please wait</p>
-                    </body>
-                    </html>
-                `);
-            } else {
-                alert('Failed to open new tab. Please check browser pop-up settings.');
-                return;
-            }
-
+            
             fetch(`https://httpbin.org/delay/${delay1}`)
                 .then(response => {
                     const delay2 = parseInt(document.getElementById('delayInput2').value, 10) / 1000;
                     console.log("delayInput2 in seconds:", delay2)
-                    if (newTab) {
-                        newTab.location.href = `second-page.html?delay=${delay2}`;
-                    }
+                    window.open(`second-page.html?delay=${delay2}`, '_blank');
                 })
                 .catch(error => {
                     alert(`Error delaying button click: ${error.message}`);
